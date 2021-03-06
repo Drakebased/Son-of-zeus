@@ -7,21 +7,20 @@ jobs:
   build-and-test:  
     # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # Be sure to update the docker image tag below to android api version of your application.
+    # Be sure to upate the tag on this image to a more stable version, using latest can result in unstable builds.
     docker:
-      - image: circleci/android:api-28
+      - image: microsoft/dotnet:latest
     steps:
       # Checkout the code as the first step.
       - checkout
-      # The next step will download the dependencies.
+      # Then simply use the dotnet container as you'd expect and run your tests
       - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-      # Then lint and run your tests!
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
-
+          # Update this line with the directory that contains your tests project file
+          working_directory: ~/project/App.Tests
+          name: Run tests
+          command: |
+            dotnet test
+            
 
 workflows:
   # Below is the definition of your workflow.
